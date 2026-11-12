@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio of Mohammed Afhaam, a 2nd-year Computer Science and Engineering student.">
     <title>Mohammed Afhaam | Portfolio</title>
+    <script>document.documentElement.classList.add('js');</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="js/main.js" defer></script>
 </head>
 <body>
 
     <header>
-        <h1>MOHAMMED AFHAAM</h1>
-        <nav>
+        <h1><span class="lens" aria-hidden="true"></span>Mohammed Afhaam</h1>
+        <nav aria-label="Main">
             <ul>
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
@@ -22,10 +28,66 @@
 
     <main>
         <section id="hero">
-            <h2>Hi, I am Mohammed Afhaam.</h2>
-            <p>2nd-Year Computer Science &amp; Engineering Student</p>
-            <p>I am a passionate learner who loves exploring new technologies, from Full Stack Development and Gen AI to Cybersecurity. I like to build practical projects to turn my curiosity into code.</p>
-            <a href="#projects">View My Projects</a>
+            <div class="stage">
+                <!-- Closed Pokédex: click it (or wait) to open -->
+                <button class="cover" type="button" aria-label="Open the Pokédex">
+                    <svg viewBox="0 0 736 1049" aria-hidden="true">
+                        <rect width="736" height="1049" rx="30" fill="#ee1c25" stroke="#000" stroke-width="6"/>
+                        <circle cx="148" cy="118" r="62" fill="#e4e4ea" stroke="#000" stroke-width="3"/>
+                        <circle cx="148" cy="118" r="46" fill="#2f4aa8"/>
+                        <circle cx="130" cy="100" r="15" fill="#b9c8ff" opacity=".85"/>
+                        <circle class="light l1" cx="278" cy="72" r="17" stroke="#000" stroke-width="4"/>
+                        <circle class="light l2" cx="331" cy="72" r="17" stroke="#000" stroke-width="4"/>
+                        <circle class="light l3" cx="383" cy="72" r="17" stroke="#000" stroke-width="4"/>
+                        <path d="M84 247H270C330 247 360 215 420 170C450 145 470 125 500 123H660V978H84Z" fill="none" stroke="#000" stroke-width="7"/>
+                        <path class="arrow" d="M115 553L168 595L115 637Z" fill="#ffd21f" stroke="#000" stroke-width="5" stroke-linejoin="round"/>
+                        <rect x="200" y="875" width="323" height="22" rx="11" fill="none" stroke="#000" stroke-width="6"/>
+                    </svg>
+                </button>
+
+                <!-- Open Pokédex: your information -->
+                <div class="dex">
+                    <div class="dex-left">
+                        <div class="lights" aria-hidden="true"><span class="light l1"></span><span class="light l2"></span><span class="light l3"></span></div>
+                        <div class="screen">
+                            <!-- Profile picture: swap this SVG for <img src="assets/images/profile.png" alt="Mohammed Afhaam"> -->
+                            <svg viewBox="0 0 200 200" role="img" aria-label="Pixel-style pink frosted donut, used as a profile picture">
+                                <circle cx="100" cy="108" r="80" fill="#d9954a"/>
+                                <circle cx="100" cy="100" r="74" fill="#ff7db5"/>
+                                <path d="M52 66C66 46 92 38 118 42" fill="none" stroke="#ffc2de" stroke-width="7" stroke-linecap="round"/>
+                                <circle cx="100" cy="100" r="25" class="hole" stroke="#d9954a" stroke-width="7"/>
+                                <g stroke-width="7" stroke-linecap="round">
+                                    <path d="M64 120l9-6" stroke="#fff"/><path d="M138 70l9 5" stroke="#ffe14d"/>
+                                    <path d="M142 128l8-7" stroke="#4dd2ff"/><path d="M92 156l2-10" stroke="#fff"/>
+                                    <path d="M70 80l-3-9" stroke="#7dff9a"/><path d="M118 150l9 3" stroke="#ffe14d"/>
+                                    <path d="M154 100l-1 9" stroke="#fff"/><path d="M50 98l8 3" stroke="#4dd2ff"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="controls" aria-hidden="true"><span class="btn-blue"></span><span class="btn-grey"></span><span class="btn-grey"></span></div>
+                        <dl class="namebox">
+                            <div><dt>Name:</dt><dd>Mohammed Afhaam</dd></div>
+                            <div><dt>Owner:</dt><dd>Afhaam-06</dd></div>
+                        </dl>
+                    </div>
+
+                    <div class="hinge" aria-hidden="true"><span class="ball top"></span><span class="ball bottom"></span></div>
+
+                    <div class="dex-right">
+                        <h2>Hi, I am Mohammed Afhaam.</h2>
+                        <p class="lead">I am a passionate learner who loves exploring new technologies, from Full Stack Development and Gen AI to Cybersecurity. I like to build practical projects to turn my curiosity into code.</p>
+                        <dl class="fields">
+                            <div><dt>Species:</dt><dd>2nd-Year Computer Science &amp; Engineering Student</dd></div>
+                            <div><dt>Nature:</dt><dd>Curious, hands-on builder</dd></div>
+                            <div><dt>Ability:</dt><dd>Full Stack, Gen AI, Cybersecurity</dd></div>
+                            <div><dt>Type:</dt><dd><span class="type py">Python</span> <span class="type java">Java</span></dd></div>
+                            <div><dt>Status:</dt><dd>Open for collaboration, internships and jobs</dd></div>
+                        </dl>
+                        <a class="cta" href="#projects">View My Projects</a>
+                    </div>
+                </div>
+            </div>
+            <p class="hint">Press the cover to open the Pokédex</p>
         </section>
 
         <section id="about">
@@ -63,31 +125,13 @@
         <section id="projects">
             <h2>Projects</h2>
             <article>
-                <h3>AI Token Counter</h3>
                 <img src="assets/images/projects/token-counter.png" alt="Displays a loadbar on claude.ai">
-                <p>A browser extension that shows token counts and tracks session and weekly usage limits with visual load bars on Claude, ChatGPT, and Gemini.</p>
-                <ul>
-                    <li>Counts tokens locally in the browser with a bundled tokenizer (o200k_base)</li>
-                    <li>Reads usage data from each platform's own pages using the user's existing logged-in session</li>
-                    <li>Uses an injected bridge script that talks to the content script</li>
-                </ul>
-                <p>Built with AI assistance, and uses the open-source <a href="https://github.com/niieani/gpt-tokenizer">gpt-tokenizer</a> library (MIT).</p>
-                <a href="https://github.com/Afhaam-06/AI-token-counter">View on GitHub</a>
-            </article>
-        </section>
-
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Open for collaboration, internships and jobs</p>
-            <ul>
-                <li>Email: <a href="mailto:mohammedafhaam15@gmail.com">mohammedafhaam15@gmail.com</a></li>
-                <li>GitHub: <a href="https://github.com/Afhaam-06" target="_blank" rel="noopener noreferrer">Afhaam-06</a></li>
-                <li>LinkedIn: <a href="https://www.linkedin.com/in/mohammed-afhaam-2036523b2" target="_blank" rel="noopener noreferrer">MOHAMMED AFHAAM</a></li>
-            </ul>
-        </section>
-    </main>
-    <footer>
-        <p>© 2026 Mohammed Afhaam</p>
-    </footer>
-</body>
-</html>
+                <div class="body">
+                    <h3>AI Token Counter</h3>
+                    <p>A browser extension that shows token counts and tracks session and weekly usage limits with visual load bars on Claude, ChatGPT, and Gemini.</p>
+                    <ul>
+                        <li>Counts tokens locally in the browser with a bundled tokenizer (o200k_base)</li>
+                        <li>Reads usage data from each platform's own pages using the user's existing logged-in session</li>
+                        <li>Uses an injected bridge script that talks to the content script</li>
+                    </ul>
+                    <p class="note
