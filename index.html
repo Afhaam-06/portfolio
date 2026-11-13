@@ -3,155 +3,550 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfolio of Mohammed Afhaam, a 2nd-year Computer Science and Engineering student.">
-    <title>Mohammed Afhaam | Portfolio</title>
+    <meta name="description" content="Portfolio of Mohammed Afhaam — 2nd-year CSE student. Interactive 3D Pokédex and Pokémon Card Showcase.">
+    <meta name="theme-color" content="#e81c25">
+    <title>Mohammed Afhaam | Pokédex Portfolio</title>
     <script>document.documentElement.classList.add('js');</script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;600;700&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="js/email-config.js" defer></script>
     <script src="js/main.js" defer></script>
 </head>
-<body>
+<body class="closed-state">
 
-    <header>
-        <h1><span class="lens" aria-hidden="true"></span>Mohammed Afhaam</h1>
-        <nav aria-label="Main">
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Ambient background -->
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="bg-pokeball"></div>
+        <div class="bg-scan-grid"></div>
+    </div>
 
-    <main>
-        <section id="hero">
-            <div class="stage">
-                <!-- Closed Pokédex: click it (or wait) to open -->
-                <button class="cover" type="button" aria-label="Open the Pokédex">
-                    <svg viewBox="0 0 736 1049" aria-hidden="true">
-                        <rect width="736" height="1049" rx="30" fill="#ee1c25" stroke="#000" stroke-width="6"/>
-                        <circle cx="148" cy="118" r="62" fill="#e4e4ea" stroke="#000" stroke-width="3"/>
-                        <circle cx="148" cy="118" r="46" fill="#2f4aa8"/>
-                        <circle cx="130" cy="100" r="15" fill="#b9c8ff" opacity=".85"/>
-                        <circle class="light l1" cx="278" cy="72" r="17" stroke="#000" stroke-width="4"/>
-                        <circle class="light l2" cx="331" cy="72" r="17" stroke="#000" stroke-width="4"/>
-                        <circle class="light l3" cx="383" cy="72" r="17" stroke="#000" stroke-width="4"/>
-                        <path d="M84 247H270C330 247 360 215 420 170C450 145 470 125 500 123H660V978H84Z" fill="none" stroke="#000" stroke-width="7"/>
-                        <path class="arrow" d="M115 553L168 595L115 637Z" fill="#ffd21f" stroke="#000" stroke-width="5" stroke-linejoin="round"/>
-                        <rect x="200" y="875" width="323" height="22" rx="11" fill="none" stroke="#000" stroke-width="6"/>
-                    </svg>
-                </button>
+    <main id="app">
+        <div class="stage" id="stage">
+            <div class="device-3d" id="device-3d">
 
-                <!-- Open Pokédex: your information -->
-                <div class="dex">
-                    <div class="dex-left">
-                        <div class="lights" aria-hidden="true"><span class="light l1"></span><span class="light l2"></span><span class="light l3"></span></div>
-                        <div class="screen">
-                            <!-- Profile picture: swap this SVG for <img src="assets/images/profile.png" alt="Mohammed Afhaam"> -->
-                            <svg viewBox="0 0 200 200" role="img" aria-label="Pixel-style pink frosted donut, used as a profile picture">
-                                <circle cx="100" cy="108" r="80" fill="#d9954a"/>
-                                <circle cx="100" cy="100" r="74" fill="#ff7db5"/>
-                                <path d="M52 66C66 46 92 38 118 42" fill="none" stroke="#ffc2de" stroke-width="7" stroke-linecap="round"/>
-                                <circle cx="100" cy="100" r="25" class="hole" stroke="#d9954a" stroke-width="7"/>
-                                <g stroke-width="7" stroke-linecap="round">
-                                    <path d="M64 120l9-6" stroke="#fff"/><path d="M138 70l9 5" stroke="#ffe14d"/>
-                                    <path d="M142 128l8-7" stroke="#4dd2ff"/><path d="M92 156l2-10" stroke="#fff"/>
-                                    <path d="M70 80l-3-9" stroke="#7dff9a"/><path d="M118 150l9 3" stroke="#ffe14d"/>
-                                    <path d="M154 100l-1 9" stroke="#fff"/><path d="M50 98l8 3" stroke="#4dd2ff"/>
-                                </g>
-                            </svg>
+                <!-- ======================================================== -->
+                <!-- REAL POKÉDEX CLAMSHELL ARCHITECTURE                      -->
+                <!-- Left panel: fixed base chassis with Trainer screen        -->
+                <!-- Center hinge: dual pokeball pivot axis                    -->
+                <!-- Right panel: physically swings 180° open like real cover  -->
+                <!-- ======================================================== -->
+                <div class="dex-shell" id="dex-shell">
+                    
+                    <!-- 1. LEFT PANEL: TRAINER CARD & HARDWARE CONTROLS -->
+                    <section class="panel-half panel-left" id="panel-left" aria-label="Trainer Profile">
+                        <div class="panel-inner">
+                            
+                            <!-- Top Bar with Sensor Lens, LEDs, and Hardware Controls -->
+                            <div class="panel-top-bar">
+                                <div class="lens-assembly" id="active-lens" title="Pokédex Optical Sensor">
+                                    <span class="lens-core"></span>
+                                    <span class="lens-sheen"></span>
+                                </div>
+                                <div class="led-group" aria-hidden="true">
+                                    <span class="led led-red"></span>
+                                    <span class="led led-yellow"></span>
+                                    <span class="led led-green"></span>
+                                </div>
+                                <div class="system-id-badge">
+                                    <span>AFHAAM-OS // V2.6</span>
+                                </div>
+
+                                <!-- Hardware controls embedded directly inside the Pokédex -->
+                                <div class="panel-top-actions">
+                                    <button id="sound-btn" class="hw-hud-btn" type="button" aria-label="Toggle background music and retro audio" aria-pressed="true" title="Toggle Music">
+                                        <span class="sound-icon" id="sound-icon">🔊</span>
+                                        <span class="sound-text" id="sound-text">SOUND: ON</span>
+                                    </button>
+                                    <button id="mobile-panel-toggle" class="hw-hud-btn hw-mobile-btn" type="button" aria-label="Toggle between profile and card">
+                                        <span id="mobile-toggle-icon">🎴</span>
+                                        <span id="mobile-toggle-text">VIEW CARD</span>
+                                    </button>
+                                    <button id="close-dex-btn" class="hw-hud-btn hw-close-btn" type="button" aria-label="Close Pokédex" title="Close Pokédex">
+                                        <span>✕ CLOSE</span>
+                                    </button>
+                                </div>
+
+                                <div class="speaker-slit" aria-hidden="true">
+                                    <i></i><i></i><i></i><i></i>
+                                </div>
+                            </div>
+
+                            <!-- Left Display Screen -->
+                            <div class="dex-screen-bezel">
+                                <div class="screen-monitor screen-off" id="left-monitor">
+                                    <div class="crt-flash" aria-hidden="true"></div>
+                                    <div class="crt-scanlines" aria-hidden="true"></div>
+
+                                    <!-- Information appears ONLY when powered on -->
+                                    <div class="screen-content trainer-content">
+                                        <div class="trainer-header-row">
+                                            <div class="terminal-badge">
+                                                <span class="terminal-led"></span>
+                                                <span class="tag-label">TRAINER TERMINAL</span>
+                                            </div>
+                                            <span class="trainer-id-num">NO. #006-CSE</span>
+                                        </div>
+
+                                        <div class="trainer-card-bio">
+                                            <div class="bio-header-group">
+                                                <h1 class="bio-name">Mohammed Afhaam</h1>
+                                                <p class="bio-subtitle">2nd-year Computer Science &amp; Engineering Undergrad</p>
+                                            </div>
+
+                                            <div class="trainer-terminal-readout">
+                                                <div class="readout-header">
+                                                    <span class="readout-dot"></span>
+                                                    <span>SYSTEM IDENTITY // OVERVIEW</span>
+                                                </div>
+                                                <p class="readout-text">
+                                                    Driven by deep curiosity for computer systems, Cybersecurity, Ethical Hacking, and Generative AI. 
+                                                    Dedicated to hands-on software development — building practical tools and scalable architectures.
+                                                </p>
+                                            </div>
+                                            
+                                            <!-- Interactive Skill Chips: Click any to jump directly to Technical Skills Card -->
+                                            <div class="bio-skills-group">
+                                                <span class="bio-group-tag">PRIMARY SKILL ATTRIBUTES</span>
+                                                <div class="bio-type-chips" role="group" aria-label="Skill Types (Click to view Skills card)">
+                                                    <button class="type-pill type-py" data-target="1" type="button" title="View Python skills">Python</button>
+                                                    <button class="type-pill type-java" data-target="1" type="button" title="View Java skills">Java</button>
+                                                    <button class="type-pill type-cyber" data-target="1" type="button" title="View Cybersecurity skills">Cybersecurity</button>
+                                                    <button class="type-pill type-ai" data-target="1" type="button" title="View Gen AI skills">Gen AI</button>
+                                                    <button class="type-pill type-web" data-target="1" type="button" title="View Web Dev skills">HTML/CSS</button>
+                                                    <button class="type-pill type-sql" data-target="1" type="button" title="View SQL skills">SQL</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="bio-stats-table">
+                                                <div class="stat-cell"><small>NATURE</small><strong>Curious Builder</strong></div>
+                                                <div class="stat-cell"><small>ABILITY</small><strong>Full Stack &amp; AI</strong></div>
+                                                <div class="stat-cell"><small>STATUS</small><strong class="status-online"><i class="status-dot"></i>Open for Collab</strong></div>
+                                            </div>
+
+                                            <!-- Direct navigation action bar on left screen -->
+                                            <div class="trainer-quick-actions">
+                                                <button class="trainer-jump-btn" data-target="0" type="button" title="Open About Me card">
+                                                    <span>★ ABOUT</span>
+                                                </button>
+                                                <button class="trainer-jump-btn" data-target="1" type="button" title="Open Technical Skills card">
+                                                    <span>⚡ SKILLS</span>
+                                                </button>
+                                                <button class="trainer-jump-btn" data-target="2" type="button" title="Open Projects card">
+                                                    <span>📂 PROJECTS</span>
+                                                </button>
+                                                <button class="trainer-jump-btn" data-target="3" type="button" title="Open Contact card">
+                                                    <span>📡 CONTACT</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Left Hardware Controls -->
+                            <div class="panel-left-controls">
+                                <button class="hardware-circle-btn" id="left-action-btn" type="button" aria-label="Cycle next section card" title="Next Card"></button>
+                                
+                                <div class="hardware-pill-group">
+                                    <button class="pill-action-btn pill-prev-btn" id="hardware-prev-btn" type="button" aria-label="Previous card" title="Previous"></button>
+                                    <button class="pill-action-btn pill-next-btn" id="hardware-next-btn" type="button" aria-label="Next card" title="Next"></button>
+                                </div>
+
+                                <!-- Directional D-Pad -->
+                                <div class="hardware-dpad" role="group" aria-label="D-Pad Navigation">
+                                    <button class="dpad-key dpad-up" data-step="-1" aria-label="Up (Previous)"></button>
+                                    <button class="dpad-key dpad-left" data-step="-1" aria-label="Left (Previous)"></button>
+                                    <div class="dpad-axis"></div>
+                                    <button class="dpad-key dpad-right" data-step="1" aria-label="Right (Next)"></button>
+                                    <button class="dpad-key dpad-down" data-step="1" aria-label="Down (Next)"></button>
+                                </div>
+                            </div>
+
+                            <!-- Left Chassis Footer -->
+                            <div class="panel-footer-plate">
+                                <span>TRAINER: <strong>Afhaam-06</strong></span>
+                                <span>REG: <strong>#006-CSE</strong></span>
+                            </div>
                         </div>
-                        <div class="controls" aria-hidden="true"><span class="btn-blue"></span><span class="btn-grey"></span><span class="btn-grey"></span></div>
-                        <dl class="namebox">
-                            <div><dt>Name:</dt><dd>Mohammed Afhaam</dd></div>
-                            <div><dt>Owner:</dt><dd>Afhaam-06</dd></div>
-                        </dl>
+                    </section>
+
+                    <!-- 2. CENTRAL MECHANICAL HINGE WITH TWO POKÉBALLS -->
+                    <div class="dex-central-hinge" aria-hidden="true">
+                        <div class="pokeball-pivot pivot-top">
+                            <span class="pokeball-cap"></span>
+                            <span class="pokeball-button"></span>
+                        </div>
+                        <div class="hinge-axis-rod"></div>
+                        <div class="pokeball-pivot pivot-bottom">
+                            <span class="pokeball-cap"></span>
+                            <span class="pokeball-button"></span>
+                        </div>
                     </div>
 
-                    <div class="hinge" aria-hidden="true"><span class="ball top"></span><span class="ball bottom"></span></div>
+                    <!-- 3. RIGHT PANEL: 3D REVERSIBLE CLAMSHELL COVER -->
+                    <!-- Swings open on hinge from -180deg (closed) to 0deg (open) -->
+                    <div class="panel-half panel-right" id="panel-right" aria-label="Portfolio Cards and Cover">
+                        
+                        <!-- ============================================== -->
+                        <!-- FACE A: INSIDE OF POKÉDEX (Visible when OPEN) -->
+                        <!-- ============================================== -->
+                        <div class="panel-face panel-face-front" id="panel-face-front">
+                            <div class="panel-inner">
+                                
+                                <!-- Cartridge Navigation Tabs (ABOUT, SKILLS, PROJECTS, CONTACT) -->
+                                <nav class="cartridge-tab-bar" role="tablist" aria-label="Pokédex Card Select">
+                                    <button class="tab-cartridge active" id="tab-about" role="tab" aria-selected="true" aria-controls="card-about" data-target="0" title="View About Card">
+                                        <span class="tab-gem gem-gold"></span>
+                                        <span class="tab-title">ABOUT</span>
+                                    </button>
+                                    <button class="tab-cartridge" id="tab-skills" role="tab" aria-selected="false" aria-controls="card-skills" data-target="1" title="View Technical Skills Card">
+                                        <span class="tab-gem gem-green"></span>
+                                        <span class="tab-title">SKILLS</span>
+                                    </button>
+                                    <button class="tab-cartridge" id="tab-projects" role="tab" aria-selected="false" aria-controls="card-projects" data-target="2" title="View Projects Card">
+                                        <span class="tab-gem gem-blue"></span>
+                                        <span class="tab-title">PROJECTS</span>
+                                    </button>
+                                    <button class="tab-cartridge" id="tab-contact" role="tab" aria-selected="false" aria-controls="card-contact" data-target="3" title="View Contact Card">
+                                        <span class="tab-gem gem-red"></span>
+                                        <span class="tab-title">CONTACT</span>
+                                    </button>
+                                </nav>
 
-                    <div class="dex-right">
-                        <h2>Hi, I am Mohammed Afhaam.</h2>
-                        <p class="lead">I am a passionate learner who loves exploring new technologies, from Full Stack Development and Gen AI to Cybersecurity. I like to build practical projects to turn my curiosity into code.</p>
-                        <dl class="fields">
-                            <div><dt>Species:</dt><dd>2nd-Year Computer Science &amp; Engineering Student</dd></div>
-                            <div><dt>Nature:</dt><dd>Curious, hands-on builder</dd></div>
-                            <div><dt>Ability:</dt><dd>Full Stack, Gen AI, Cybersecurity</dd></div>
-                            <div><dt>Type:</dt><dd><span class="type py">Python</span> <span class="type java">Java</span></dd></div>
-                            <div><dt>Status:</dt><dd>Open for collaboration, internships and jobs</dd></div>
-                        </dl>
-                        <a class="cta" href="#projects">View My Projects</a>
+                                <!-- Right Screen Monitor -->
+                                <div class="dex-screen-bezel card-bezel">
+                                    <div class="screen-monitor screen-off" id="right-monitor">
+                                        <div class="crt-flash" aria-hidden="true"></div>
+                                        <div class="crt-scanlines" aria-hidden="true"></div>
+
+                                        <!-- ======================================================= -->
+                                        <!-- CARD 1: ABOUT ME (Electric Type - card-electric.jpg)     -->
+                                        <!-- ======================================================= -->
+                                        <article class="pokemon-tcg-card card-about active" id="card-about" role="tabpanel" aria-labelledby="tab-about" data-index="0">
+                                            <div class="card-art-frame-wrap">
+                                                <img class="card-bg-img" src="assets/images/cards/card-electric.jpg" alt="Electric Type Card Template">
+                                                <div class="card-holo-shine" aria-hidden="true"></div>
+                                            </div>
+
+                                            <!-- Content positioned over card template -->
+                                            <div class="card-content-layer">
+                                                <div class="card-top-header">
+                                                    <span class="card-name-title">Mohammed Afhaam</span>
+                                                    <span class="card-hp-badge">140 <small>HP</small></span>
+                                                </div>
+
+                                                <div class="card-illustration-box">
+                                                    <div class="quote-art-inner">
+                                                        <span class="quote-sign">&ldquo;</span>
+                                                        <p class="quote-text">The best way to learn is by doing.</p>
+                                                        <span class="quote-author">&mdash; Mohammed Afhaam</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-rules-moves">
+                                                    <div class="tcg-attack-row">
+                                                        <div class="attack-header">
+                                                            <span class="energy-pips"><i class="pip-electric"></i><i class="pip-electric"></i></span>
+                                                            <strong class="attack-title">Curiosity Engine</strong>
+                                                            <span class="attack-damage">60</span>
+                                                        </div>
+                                                        <p class="attack-text">2nd-year CSE student driven by deep curiosity for computer architectures, Cybersecurity, Ethical Hacking, and Generative AI.</p>
+                                                    </div>
+
+                                                    <div class="tcg-attack-row">
+                                                        <div class="attack-header">
+                                                            <span class="energy-pips"><i class="pip-electric"></i><i class="pip-electric"></i><i class="pip-star"></i></span>
+                                                            <strong class="attack-title">Hands-On Build</strong>
+                                                            <span class="attack-damage">100+</span>
+                                                        </div>
+                                                        <p class="attack-text">Builds practical projects that push past comfort zones to acquire new tools and engineer reliable software.</p>
+                                                    </div>
+
+                                                    <div class="card-next-action-row">
+                                                        <button class="card-flow-btn" data-target="1" type="button">
+                                                            <span>VIEW TECHNICAL SKILLS CARD</span>
+                                                            <span class="arr-icon">&#10140;</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-stats-footer">
+                                                    <div class="stat-col"><small>weakness</small> <span>Fighting &times;2</span></div>
+                                                    <div class="stat-col"><small>resistance</small> <span>Steel -30</span></div>
+                                                    <div class="stat-col"><small>retreat</small> <span>&#10022;</span></div>
+                                                </div>
+                                            </div>
+                                        </article>
+
+                                        <!-- ======================================================= -->
+                                        <!-- CARD 2: TECHNICAL SKILLS (Grass Type - card3.jpg)       -->
+                                        <!-- ======================================================= -->
+                                        <article class="pokemon-tcg-card card-skills" id="card-skills" role="tabpanel" aria-labelledby="tab-skills" data-index="1" hidden>
+                                            <div class="card-art-frame-wrap">
+                                                <img class="card-bg-img" src="assets/references/card3.jpg" alt="Grass Type Card Template">
+                                                <div class="card-holo-shine" aria-hidden="true"></div>
+                                            </div>
+
+                                            <div class="card-content-layer">
+                                                <div class="card-top-header">
+                                                    <span class="card-name-title">Technical Skills</span>
+                                                    <span class="card-hp-badge">150 <small>HP</small></span>
+                                                </div>
+
+                                                <div class="card-illustration-box">
+                                                    <div class="skills-art-matrix">
+                                                        <div class="matrix-tag">CORE MOVE SET</div>
+                                                        <div class="skills-chips-row">
+                                                            <span class="code-chip chip-py">Python</span>
+                                                            <span class="code-chip chip-java">Java</span>
+                                                            <span class="code-chip chip-web">HTML/CSS</span>
+                                                            <span class="code-chip chip-sql">SQL</span>
+                                                            <span class="code-chip chip-git">Git</span>
+                                                            <span class="code-chip chip-linux">Linux</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-rules-moves">
+                                                    <div class="tcg-attack-row">
+                                                        <div class="attack-header">
+                                                            <span class="energy-pips"><i class="pip-grass"></i><i class="pip-grass"></i></span>
+                                                            <strong class="attack-title">Languages Arsenal</strong>
+                                                            <span class="attack-damage">80</span>
+                                                        </div>
+                                                        <p class="attack-text"><strong>Languages:</strong> Python, Java, HTML, CSS, SQL. Structured for scalable logic, data handling, and clean responsive web design.</p>
+                                                    </div>
+
+                                                    <div class="tcg-attack-row">
+                                                        <div class="attack-header">
+                                                            <span class="energy-pips"><i class="pip-grass"></i><i class="pip-grass"></i><i class="pip-star"></i></span>
+                                                            <strong class="attack-title">Tools &amp; Paradigms</strong>
+                                                            <span class="attack-damage">100</span>
+                                                        </div>
+                                                        <p class="attack-text"><strong>Tooling:</strong> Git &amp; GitHub, Linux shell environments. <strong>Concepts:</strong> Object-Oriented Programming (OOP), JSON APIs, and basic testing.</p>
+                                                    </div>
+
+                                                    <div class="card-next-action-row">
+                                                        <button class="card-flow-btn" data-target="2" type="button">
+                                                            <span>VIEW FEATURED PROJECTS</span>
+                                                            <span class="arr-icon">&#10140;</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-stats-footer">
+                                                    <div class="stat-col"><small>weakness</small> <span>Fire &times;2</span></div>
+                                                    <div class="stat-col"><small>resistance</small> <span>Water -30</span></div>
+                                                    <div class="stat-col"><small>retreat</small> <span>&#10022;</span></div>
+                                                </div>
+                                            </div>
+                                        </article>
+
+                                        <!-- ======================================================= -->
+                                        <!-- CARD 3: PROJECTS (Water Type - card4.jpg)               -->
+                                        <!-- ======================================================= -->
+                                        <article class="pokemon-tcg-card card-projects" id="card-projects" role="tabpanel" aria-labelledby="tab-projects" data-index="2" hidden>
+                                            <div class="card-art-frame-wrap">
+                                                <img class="card-bg-img" src="assets/references/card4.jpg" alt="Water Type Card Template">
+                                                <div class="card-holo-shine" aria-hidden="true"></div>
+                                            </div>
+
+                                            <div class="card-content-layer">
+                                                <div class="card-top-header">
+                                                    <span class="card-name-title" id="proj-card-name">AI Token Counter</span>
+                                                    <span class="card-hp-badge">180 <small>HP</small></span>
+                                                </div>
+
+                                                <div class="card-illustration-box project-preview-box">
+                                                    <img class="proj-screenshot" id="proj-current-img" src="assets/images/projects/token-counter.png" alt="AI Token Counter Screenshot">
+                                                    <div class="proj-category-tag" id="proj-category-tag">BROWSER EXTENSION</div>
+                                                </div>
+
+                                                <!-- Carousel switch for user's projects -->
+                                                <div class="proj-carousel-selector" role="tablist" aria-label="Select Project">
+                                                    <button class="proj-nav-pill active" data-proj="0" type="button">Token Counter</button>
+                                                    <button class="proj-nav-pill" data-proj="1" type="button">Budget Alert</button>
+                                                    <button class="proj-nav-pill" data-proj="2" type="button">RPG Game</button>
+                                                </div>
+
+                                                <div class="card-rules-moves">
+                                                    <div class="tcg-attack-row" id="proj-desc-box">
+                                                        <div class="attack-header">
+                                                            <span class="energy-pips"><i class="pip-water"></i><i class="pip-water"></i></span>
+                                                            <strong class="attack-title" id="proj-move-title">Token Stream</strong>
+                                                            <span class="attack-damage">120</span>
+                                                        </div>
+                                                        <p class="attack-text" id="proj-move-desc">Shows token counts &amp; tracks session / weekly limits with visual load bars on Claude, ChatGPT &amp; Gemini. Bundled tokenizer runs 100% locally in-browser.</p>
+                                                    </div>
+
+                                                    <div class="proj-action-bar">
+                                                        <a class="github-card-btn" id="proj-github-link" href="https://github.com/Afhaam-06/AI-token-counter" target="_blank" rel="noopener noreferrer">
+                                                            <span>OPEN ON GITHUB</span>
+                                                            <span class="arr-icon">&#8599;</span>
+                                                        </a>
+                                                        <button class="card-flow-btn flow-inline" data-target="3" type="button">
+                                                            <span>CONTACT AFHAAM &#10140;</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-stats-footer">
+                                                    <div class="stat-col"><small>weakness</small> <span>Lightning &times;2</span></div>
+                                                    <div class="stat-col"><small>resistance</small> <span>Steel -30</span></div>
+                                                    <div class="stat-col"><small>retreat</small> <span>&#10022;&#10022;</span></div>
+                                                </div>
+                                            </div>
+                                        </article>
+
+                                        <!-- ======================================================= -->
+                                        <!-- CARD 4: CONTACT (Fire Type - card2.jpg)                 -->
+                                        <!-- ======================================================= -->
+                                        <article class="pokemon-tcg-card card-contact" id="card-contact" role="tabpanel" aria-labelledby="tab-contact" data-index="3" hidden>
+                                            <div class="card-art-frame-wrap">
+                                                <img class="card-bg-img" src="assets/references/card2.jpg" alt="Fire Type Card Template">
+                                                <div class="card-holo-shine" aria-hidden="true"></div>
+                                            </div>
+
+                                            <div class="card-content-layer">
+                                                <div class="card-top-header">
+                                                    <span class="card-name-title">Link Cable / Contact</span>
+                                                    <span class="card-hp-badge">200 <small>HP</small></span>
+                                                </div>
+
+                                                <div class="card-illustration-box contact-console-box">
+                                                    <div class="radar-circle-glow" aria-hidden="true"></div>
+
+                                                    <form class="contact-form" id="contact-form" action="mailto:mohammedafhaam15@gmail.com" method="post" enctype="text/plain" novalidate>
+                                                        <div class="console-head">
+                                                            <span class="console-title"><i class="console-led" aria-hidden="true"></i> <span aria-hidden="true">📡</span> SEND A MESSAGE</span>
+                                                            <span class="console-status" id="contact-status" role="status" aria-live="polite">READY</span>
+                                                        </div>
+
+                                                        <div class="console-fields">
+                                                            <label class="console-field">
+                                                                <span class="console-label">NAME</span>
+                                                                <input id="contact-name" name="name" type="text" placeholder="Your name" autocomplete="name" maxlength="80" required>
+                                                            </label>
+                                                            <label class="console-field">
+                                                                <span class="console-label">EMAIL / NUMBER</span>
+                                                                <input id="contact-reach" name="contact" type="text" placeholder="you@mail.com" autocomplete="email" maxlength="120" required>
+                                                            </label>
+                                                        </div>
+
+                                                        <label class="console-field console-message-field">
+                                                            <span class="console-label">MESSAGE</span>
+                                                            <textarea id="contact-message" name="message" rows="2" placeholder="Say hello, share a role, or pitch a collab..." maxlength="2000" required></textarea>
+                                                        </label>
+
+                                                        <div class="console-actions">
+                                                            <button class="console-send-btn" id="contact-send" type="submit"><span aria-hidden="true">⚡</span> SEND TRANSMISSION</button>
+                                                            <a class="console-mailto" id="contact-mailto" href="mailto:mohammedafhaam15@gmail.com">USE EMAIL APP</a>
+                                                        </div>
+
+                                                        <!-- Spam honeypot: real visitors never see or fill this -->
+                                                        <input class="console-honeypot" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+                                                    </form>
+                                                </div>
+
+                                                <div class="card-rules-moves">
+                                                    <div class="contact-links-grid">
+                                                        <a class="contact-link-row" href="mailto:mohammedafhaam15@gmail.com">
+                                                            <span class="contact-icon-badge">@</span>
+                                                            <span class="contact-link-label">
+                                                                <small>EMAIL</small>
+                                                                <strong>mohammedafhaam15@gmail.com</strong>
+                                                            </span>
+                                                            <span class="contact-link-arr">&#8599;</span>
+                                                        </a>
+
+                                                        <a class="contact-link-row" href="https://github.com/Afhaam-06" target="_blank" rel="noopener noreferrer">
+                                                            <span class="contact-icon-badge">&lt;/&gt;</span>
+                                                            <span class="contact-link-label">
+                                                                <small>GITHUB</small>
+                                                                <strong>github.com/Afhaam-06</strong>
+                                                            </span>
+                                                            <span class="contact-link-arr">&#8599;</span>
+                                                        </a>
+
+                                                        <a class="contact-link-row" href="https://www.linkedin.com/in/mohammed-afhaam-2036523b2" target="_blank" rel="noopener noreferrer">
+                                                            <span class="contact-icon-badge">in</span>
+                                                            <span class="contact-link-label">
+                                                                <small>LINKEDIN</small>
+                                                                <strong>MOHAMMED AFHAAM</strong>
+                                                            </span>
+                                                            <span class="contact-link-arr">&#8599;</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-stats-footer">
+                                                    <div class="stat-col"><small>weakness</small> <span>Water &times;2</span></div>
+                                                    <div class="stat-col"><small>resistance</small> <span>Grass -30</span></div>
+                                                    <div class="stat-col"><small>retreat</small> <span>FREE</span></div>
+                                                </div>
+                                            </div>
+                                        </article>
+
+                                    </div>
+                                </div>
+
+                                <!-- Right Chassis Footer Plate -->
+                                <div class="panel-footer-plate right-plate">
+                                    <span>ENTRY <b id="card-entry-counter">001</b> / 004</span>
+                                    <span class="grille-mini" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                                    <span>&copy; 2026 Mohammed Afhaam</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ============================================== -->
+                        <!-- FACE B: OUTSIDE OF COVER (Visible when CLOSED) -->
+                        <!-- Folds over left panel at -180deg on hinge      -->
+                        <!-- ============================================== -->
+                        <div class="panel-face panel-face-back" id="panel-face-back">
+                            <div class="cover-surface">
+                                <!-- Clean Pokédex cover chassis artwork -->
+                                <img class="closed-cover-img" src="assets/images/device/closed-pokedex-clean.png" alt="Pokédex Closed Chassis" draggable="false">
+
+                                <!-- Specular Optical Lens Halo over the closed sensor -->
+                                <div class="closed-lens-halo" aria-hidden="true"></div>
+
+                                <!-- Glowing status LEDs on the closed chassis -->
+                                <div class="closed-leds" aria-hidden="true">
+                                    <span class="closed-led closed-led-red"></span>
+                                    <span class="closed-led closed-led-yellow"></span>
+                                    <span class="closed-led closed-led-green"></span>
+                                </div>
+
+                                <!-- Physical Mechanical Latch Button -->
+                                <button class="closed-latch-trigger" id="latch-trigger-btn" type="button" aria-label="Press latch to open the Pokédex" title="Open Pokédex">
+                                    <span class="latch-arrow-triangle"></span>
+                                    <span class="latch-ring-pulse" aria-hidden="true"></span>
+                                </button>
+
+                                <!-- Big Click-To-Open Region & Animated Badge -->
+                                <button class="closed-hitbox" id="closed-hitbox" type="button" aria-label="Click anywhere to open the Pokédex">
+                                    <span class="open-pill-badge">
+                                        <span class="badge-dot"></span>
+                                        <strong>CLICK TO OPEN POKÉDEX</strong>
+                                        <small>OR SELECT ANY TAB ABOVE / PRESS SPACE</small>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
+
                 </div>
+
             </div>
-            <p class="hint">Press the cover to open the Pokédex</p>
-        </section>
+        </div>
 
-        <section id="about">
-            <h2>About Me</h2>
-            <p>I am a second-year CSE student with a deep curiosity for how computers and modern technologies work. While my coursework gives me a strong foundation, I am particularly interested in exploring fields like Cybersecurity, Ethical Hacking, and Generative AI.</p>
-            <p>I believe the best way to learn is by doing. I enjoy building hands-on projects because they push me out of my comfort zone and give me the opportunity to learn new tools. My ultimate goal is to build a career in a tech field that aligns with my passions, allowing me to work with genuine dedication and continuously grow.</p>
-            <p>When I am not at my keyboard, you can find me playing video games and exploring the nature around me.</p>
-        </section>
-
-        <section id="skills">
-            <h2>Technical Skills</h2>
-            <h3>Languages</h3>
-            <ul>
-                <li>Python</li>
-                <li>Java</li>
-                <li>HTML</li>
-                <li>CSS</li>
-                <li>SQL</li>
-            </ul>
-
-            <h3>Tools</h3>
-            <ul>
-                <li>Git</li>
-                <li>Linux</li>
-            </ul>
-
-            <h3>Concepts</h3>
-            <ul>
-                <li>Object-Oriented Programming (OOP)</li>
-                <li>JSON</li>
-                <li>Basic Testing</li>
-            </ul>
-        </section>
-
-        <section id="projects">
-            <h2>Projects</h2>
-            <article>
-                <img src="assets/images/projects/token-counter.png" alt="Displays a loadbar on claude.ai">
-                <div class="body">
-                    <h3>AI Token Counter</h3>
-                    <p>A browser extension that shows token counts and tracks session and weekly usage limits with visual load bars on Claude, ChatGPT, and Gemini.</p>
-                    <ul>
-                        <li>Counts tokens locally in the browser with a bundled tokenizer (o200k_base)</li>
-                        <li>Reads usage data from each platform's own pages using the user's existing logged-in session</li>
-                        <li>Uses an injected bridge script that talks to the content script</li>
-                    </ul>
-                    <p class="note">Built with AI assistance, and uses the open-source <a href="https://github.com/niieani/gpt-tokenizer">gpt-tokenizer</a> library (MIT).</p>
-                    <a class="cta" href="https://github.com/Afhaam-06/AI-token-counter">View on GitHub</a>
-                </div>
-            </article>
-        </section>
-
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Open for collaboration, internships and jobs</p>
-            <ul>
-                <li>Email: <a href="mailto:mohammedafhaam15@gmail.com">mohammedafhaam15@gmail.com</a></li>
-                <li>GitHub: <a href="https://github.com/Afhaam-06" target="_blank" rel="noopener noreferrer">Afhaam-06</a></li>
-                <li>LinkedIn: <a href="https://www.linkedin.com/in/mohammed-afhaam-2036523b2" target="_blank" rel="noopener noreferrer">MOHAMMED AFHAAM</a></li>
-            </ul>
-        </section>
+        <!-- Hidden audio element for Pokemon opening theme music -->
+        <audio id="dex-audio" src="assets/audio/opening.mp3" preload="auto" loop></audio>
     </main>
-    <footer>
-        <p>© 2026 Mohammed Afhaam</p>
-    </footer>
+
 </body>
 </html>
